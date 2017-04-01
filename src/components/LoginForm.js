@@ -5,9 +5,22 @@ import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser,} from '../action/firebaseAuth'
-
+import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 class LoginForm extends Component {
+
+  _fbAuth = () => {
+    LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
+      if(result.isCancelled) {
+        console.log('Login Cancelled');
+      } else {
+        console.log('result object:', result)
+        console.log('Login Success:' + result.grantedPermissions.toString());
+      }
+    },function(error){
+      console.log('Login Error:' + error )
+    })
+  } 
 
   authError(loginError) {
     //Auth Error Message when log in fail
@@ -66,6 +79,12 @@ class LoginForm extends Component {
             onChangeText={passwordChanged}
             value={password}
           />
+        </CardSection>
+
+        <CardSection>
+          <Button onPress={this._fbAuth}>
+            Facebook Login
+          </Button>
         </CardSection>
 
           {this.authError(loginError)}
