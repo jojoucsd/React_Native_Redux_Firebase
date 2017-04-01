@@ -120,7 +120,6 @@ class GroceryScreen extends Component {
 
                 <ActionButton title="Add" onPress={this._addItem.bind(this)} />
                 <ActionButton title="Mobile" onPress={this._addMobile.bind(this)} />
-                <ActionButton title="Log Out" onPress={() => this.props.logoutUser()} />
             </View>
         )
     }

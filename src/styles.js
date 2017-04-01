@@ -1,7 +1,7 @@
 const React = require('react-native')
-const {StyleSheet} = React
+const { StyleSheet } = React
 const constants = {
-  actionColor: '#24CE84'
+  actionColor: 'transparent'
 };
 
 var styles = StyleSheet.create({
@@ -51,17 +51,24 @@ var styles = StyleSheet.create({
     textAlign: 'center',
   },
   actionText: {
-    color: '#fff',
+    color: 'black',
     fontSize: 16,
+    fontWeight: '600',
     textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 10
   },
   action: {
     backgroundColor: constants.actionColor,
-    borderColor: 'transparent',
+    borderColor: 'black',
+    borderRadius: 5,
     borderWidth: 1,
-    paddingLeft: 16,
-    paddingTop: 14,
-    paddingBottom: 16,
+    paddingLeft: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+    marginLeft: 5,
+    marginRight: 5,
+    alignSelf: 'stretch'
   },
 })
 

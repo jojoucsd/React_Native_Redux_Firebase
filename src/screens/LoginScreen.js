@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, TouchableHighlight, AlertIOS, Navigator, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
-import { Header,Spinner } from '../components/common';
+import { Button, Header,Spinner, CardSection } from '../components/common';
 import LoginForm from '../components/LoginForm';
 import GroceryScreen from '../screens/GroceryScreen'
 import { connect } from 'react-redux';
@@ -19,7 +19,11 @@ class LoginScreen extends Component {
         return (
           <View>
             <GroceryScreen {...this.props} />
-
+            <CardSection>
+              <Button>
+                Log Out
+              </Button>
+            </CardSection>
           </View>
         );
       case false:
