@@ -4,23 +4,31 @@ import firebase from 'firebase';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { emailChanged, passwordChanged, loginUser,} from '../action/firebaseAuth'
+import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
+const { AccessToken, LoginButton } = FBSDK
 
 class LoginForm extends Component {
 
   _fbAuth = () => {
-    LoginManager.logInWithReadPermissions(['public_profile']).then(function(result) {
-      if(result.isCancelled) {
+    LoginManager.logInWithReadPermissions(["email"]).then(function (result) {
+      if (result.isCancelled) {
         console.log('Login Cancelled');
       } else {
+        AccessToken.getCurrentAccessToken(result)
+          .then((data) => {
+            console.log('user token', data)
+          })
+          .catch((err) => {
+            console.log('Error', err);
+          })
         console.log('result object:', result)
-        console.log('Login Success:' + result.grantedPermissions.toString());
+        console.log('Login Success:' + result.grantedPermissions);
       }
-    },function(error){
-      console.log('Login Error:' + error )
+    }, function (error) {
+      console.log('Login Error:' + error)
     })
-  } 
+  }
 
   authError(loginError) {
     //Auth Error Message when log in fail
@@ -37,7 +45,7 @@ class LoginForm extends Component {
   handleLogin = () => {
     // Action to Reducer to login and create user
 
-    const { email, password} = this.props
+    const { email, password } = this.props
     this.props.loginUser({ email, password })
   }
 
@@ -82,12 +90,34 @@ class LoginForm extends Component {
         </CardSection>
 
         <CardSection>
-          <Button onPress={this._fbAuth}>
+          {/*<Button onPress={this._fbAuth}>
             Facebook Login
-          </Button>
+          </Button>*/}
+          <LoginButton
+            publishPermissions={["publish_actions"]}
+            onLoginFinished={
+              (error, result) => {
+                if (error) {
+                  alert("Login failed with error: " + result.error);
+                } else if (result.isCancelled) {
+                  alert("Login was cancelled");
+                } else {
+                  alert("Login was successful with permissions: " + result.grantedPermissions)
+                  console.log(result.grantedPermissions)
+                  AccessToken.getCurrentAccessToken(result)
+                    .then((data) => {
+                      console.log('user token', data)
+                    })
+                    .catch((err) => {
+                      console.log('Error', err);
+                    })
+                }
+              }
+            }
+            onLogoutFinished={() => alert("User logged out")} />
         </CardSection>
 
-          {this.authError(loginError)}
+        {this.authError(loginError)}
 
         <CardSection>
           {this.renderButton()}
@@ -99,7 +129,7 @@ class LoginForm extends Component {
 }
 
 function mapStateToProps(state) {
-  const { email, password, loginError, uid, isLoading} = state.auth;
+  const { email, password, loginError, uid, isLoading } = state.auth;
 
   //maping the state in reducer to the props and grant access to this.props
 
@@ -120,4 +150,4 @@ const styles = {
   }
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser})(LoginForm)
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm)
