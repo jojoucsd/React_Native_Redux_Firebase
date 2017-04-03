@@ -11,3 +11,6 @@ export const USER_UPDATE_MOBILE = 'user_update_mobile'
 export const USER_LISTEN_MOBILE = 'user_listen_mobile'
 export const GET_CURRENTUSER = 'get_CurrentUser'
 export const LISTEN_ITEMS = "listen_for_items"
+export const GET_FB_TOKEN = " get_fb_token"
+export const CHECK_FB_AUTH = " check_fb_auth"
+export const FB_LOG_OUT = " fb_log_out"

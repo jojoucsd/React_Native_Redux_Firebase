@@ -5,15 +5,23 @@ import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
+import { getAccessToken, checkAuthencity } from '../action/facebookAuth'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
 const { AccessToken, LoginButton, GraphRequest, GraphRequestManager } = FBSDK
+const infoRequest = new GraphRequest(
+  'me?fields=name,picture,email',
+  null,
+  this._responseInfoCallback,
+);
+
 
 class LoginForm extends Component {
 
   componentWillMount() {
-    this.checkAuthencity()
+    this.props.checkAuthencity()
   }
   componentDidMount() {
+
     this.getAccessToken()
   }
 
@@ -22,35 +30,31 @@ class LoginForm extends Component {
     this.getAccessToken();
   }
 
-  checkAuthencity() {
-    const infoRequest = new GraphRequest(
-      'me?fields=name,picture,email',
-      null,
-      this._responseInfoCallback,
-    );
-    AccessToken.getCurrentAccessToken().then(
-      (data) => {
-        if (data) {
-          console.log('we are in data')
-          new GraphRequestManager().addRequest(infoRequest).start()
-        }
-      }
-    )
-  }
+  // checkAuthencity() {
+  //   AccessToken.getCurrentAccessToken()
+  //     .then((data) => {
+  //       this.props.checkAuthencity()
+  //     })
+  //     .catch((err) => {
+  //       console.log('Err', err)
+  //     })
+  // }
+
   getAccessToken() {
-    const infoRequest = new GraphRequest(
-      'me?fields=name,picture,email',
-      null,
-      this._responseInfoCallback,
-    );
-    AccessToken.getCurrentAccessToken().then(
-      (data) => {
-        if (data) {
-          console.log('we are in data')
-          new GraphRequestManager().addRequest(infoRequest).start()
-        }
-      }
-    )
+    console.log('log in get access')
+    // const infoRequest = new GraphRequest(
+    //   'me?fields=name,picture,email',
+    //   null,
+    //   this._responseInfoCallback,
+    // );
+    // AccessToken.getCurrentAccessToken().then(
+    //   (data) => {
+    //     if (data) {
+    //       console.log('we are in data')
+    //       new GraphRequestManager().addRequest(infoRequest).start()
+    //     }
+    //   }
+    // )
   }
   _responseInfoCallback = (error, result) => {
     if (error) {
@@ -113,7 +117,6 @@ class LoginForm extends Component {
     const {
       email, emailChanged, password, passwordChanged, loginUser, loginError
     } = this.props
-    console.log('State', this.state)
     return (
       <Card>
         <CardSection>
@@ -145,7 +148,7 @@ class LoginForm extends Component {
           <Button onPress={this._fbAuth}>
             Facebook Login
           </Button>
-          {/*<LoginButton
+          <LoginButton
             publishPermissions={["publish_actions"]}
             onLoginFinished={
               (error, result) => {
@@ -167,7 +170,7 @@ class LoginForm extends Component {
                 }
               }
             }
-            onLogoutFinished={() => alert("User logged out")} />*/}
+            onLogoutFinished={() => alert("User logged out")} />
         </CardSection>
 
       </Card>
@@ -197,4 +200,4 @@ const styles = {
   }
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm)
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, checkAuthencity, getAccessToken })(LoginForm)
