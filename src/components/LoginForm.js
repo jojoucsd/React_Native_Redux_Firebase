@@ -6,23 +6,55 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
-const { AccessToken, LoginButton } = FBSDK
+const { AccessToken, LoginButton, GraphRequest, GraphRequestManager } = FBSDK
 
 class LoginForm extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      name: '',
+      pic: ''
+    }
+  }
+
+  _callBack = (error, result) => {
+    if (error) {
+      alert('Error fetching data' + JSON.stringify(error));
+      console.log('error', error)
+    } else {
+      console.log("CALL BACK SUCCESS", result)
+    }
+  }
+
+  userGraph = () => {
+
+    new GraphRequestManager().addRequest(
+      new GraphRequest('/me?fields=name,email', null, this._callBack))
+      .start()
+    console.log('after here, log', this.state)
+  }
+
+  componentWillMount() {
+    // console.log(AccessToken)
+    AccessToken.getCurrentAccessToken().then(
+      (data) => {
+        if (data) {
+          console.log('we are in data')
+          new GraphRequestManager().addRequest(
+            new GraphRequest('/me?fields=picture,name,email', null, this._callBack))
+            .start()
+        }
+      }
+    )
+
+    // this.userGraph()
+  }
   _fbAuth = () => {
     LoginManager.logInWithReadPermissions(["email"]).then(function (result) {
       if (result.isCancelled) {
         console.log('Login Cancelled');
       } else {
-        AccessToken.getCurrentAccessToken(result)
-          .then((data) => {
-            console.log('user token', data)
-          })
-          .catch((err) => {
-            console.log('Error', err);
-          })
-        console.log('result object:', result)
         console.log('Login Success:' + result.grantedPermissions);
       }
     }, function (error) {
@@ -67,7 +99,7 @@ class LoginForm extends Component {
     const {
       email, emailChanged, password, passwordChanged, loginUser, loginError
     } = this.props
-
+    console.log('State', this.state)
     return (
       <Card>
         <CardSection>
@@ -103,9 +135,10 @@ class LoginForm extends Component {
                   alert("Login was cancelled");
                 } else {
                   alert("Login was successful with permissions: " + result.grantedPermissions)
-                  console.log(result.grantedPermissions)
+                  console.log(result)
                   AccessToken.getCurrentAccessToken(result)
                     .then((data) => {
+                      this.userGraph()
                       console.log('user token', data)
                     })
                     .catch((err) => {
