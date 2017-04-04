@@ -54,9 +54,33 @@ class LoginForm extends Component {
     }
 
     return (
-      <Button onPress={this.handleLogin.bind(this)}>
-        Login
+      <CardSection>
+        <Button onPress={this.handleLogin.bind(this)}>
+          Login
       </Button>
+      </CardSection>
+    )
+  }
+  renderFBlogin() {
+    if (this.props.isLoading) {
+      return <Spinner size="large" />
+    }
+    return (
+      <LoginButton
+        publishPermissions={["publish_actions"]}
+        onLoginFinished={
+          (error, result) => {
+            if (error) {
+              console.log("Login failed with error: ", result.error);
+            } else if (result.isCancelled) {
+              console.log("Login was cancelled");
+            } else {
+              console.log("Login was successful with permissions: " + result.grantedPermissions)
+              this.successfulFbLogin()
+            }
+          }
+        }
+        onLogoutFinished={() => alert("User logged out")} />
     )
   }
 
@@ -87,27 +111,10 @@ class LoginForm extends Component {
 
         {this.authError(loginError)}
 
-        <CardSection>
-          {this.renderButton()}
-        </CardSection>
 
-        <CardSection>
-          <LoginButton
-            publishPermissions={["publish_actions"]}
-            onLoginFinished={
-              (error, result) => {
-                if (error) {
-                  console.log("Login failed with error: " ,result.error);
-                } else if (result.isCancelled) {
-                  console.log("Login was cancelled");
-                } else {
-                  console.log("Login was successful with permissions: " + result.grantedPermissions)
-                  this.successfulFbLogin()
-                }
-              }
-            }
-            onLogoutFinished={() => alert("User logged out")} />
-        </CardSection>
+        {this.renderButton()}
+        {this.renderFBlogin()}
+
       </Card>
     )
   }
