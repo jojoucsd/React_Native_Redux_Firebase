@@ -22,7 +22,7 @@ class LoginScreen extends Component {
           <View>
             <GroceryScreen {...this.props} />
             <CardSection>
-              <Button>
+              <Button onPress = {this.props.logoutUser}>
                 Log Out
               </Button>
             </CardSection>
@@ -45,12 +45,6 @@ class LoginScreen extends Component {
     )
   };
 
-  // _navigateToGroceryScreen(uid) {
-  //   this.props.navigator.push({
-  //     ident: "GroceryScreen",
-  //     uid: uid
-  //   })
-  // }
 }
 
 function mapStateToProps(state) {

@@ -69,7 +69,7 @@ class AppNavi extends Component {
 
     componentWillMount() {
         firebaseApp;
-
+        console.log("CALLED")
         this.props.userStatus()
 
         this.onIndexView = false;

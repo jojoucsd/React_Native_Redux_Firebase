@@ -25,10 +25,10 @@ class LoginForm extends Component {
     this.getAccessToken()
   }
 
-  successfulFbLogin() {
-    this.checkAuthencity()
-    this.getAccessToken();
-  }
+  // successfulFbLogin = () => {
+  //   // this.checkAuthencity()
+  //   this.getAccessToken();
+  // }
 
   // checkAuthencity() {
   //   AccessToken.getCurrentAccessToken()
@@ -72,7 +72,9 @@ class LoginForm extends Component {
         console.log('Login Cancelled');
       } else {
         console.log('Login Success:' + result.grantedPermissions);
-        this.successfulFbLogin();
+        console.log('this', this)
+        this.props.checkAuthencity()
+        //push here
       }
     }, function (error) {
       alert('Login Error', error)

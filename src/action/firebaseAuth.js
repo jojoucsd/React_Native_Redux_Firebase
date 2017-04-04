@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import FBSDK, { LoginManager } from 'react-native-fbsdk'
+
 import { 
     EMAIL_CHANGED, 
     PASSWORD_CHANGED, 
@@ -75,6 +77,7 @@ export const userStatus = () => dispatch => {
 }
 
 export const logoutUser = () => dispatch => {
+    LoginManager.logOut()
     firebase.auth().signOut()
         dispatch({
             type: USER_LOG_OUT,
