@@ -8,7 +8,6 @@ import GroceryScreen from '../screens/GroceryScreen'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { logoutUser, userStatus } from '../action/firebaseAuth'
-import { checkAuthencity } from '../action/facebookAuth'
 
 class LoginScreen extends Component {
 
@@ -56,9 +55,8 @@ class LoginScreen extends Component {
 
 function mapStateToProps(state) {
   const { loggedIn, uid } = state.auth
-  const { fbloggedIn} = state.fbAuth
 
-  return { loggedIn, uid, fbloggedIn}
+  return { loggedIn, uid}
 }
 
 const styles = StyleSheet.create({
@@ -67,4 +65,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, { logoutUser, userStatus, checkAuthencity })(LoginScreen)
+export default connect(mapStateToProps, { logoutUser, userStatus})(LoginScreen)
