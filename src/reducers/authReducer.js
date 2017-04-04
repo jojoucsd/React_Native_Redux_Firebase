@@ -36,6 +36,7 @@ export default (state = INITIAL_STATE, action ) => {
         case USER_CHANGED:
             return { ...state, loggedIn: action.loggedIn}
         case USER_NO_CHANGED:
+            console.log('user in no change route',action.uid)
             return { ...state, loggedIn: action.loggedIn, uid: action.uid}
         case USER_LOG_OUT:
             return { ...state, email: '', password: '', loggedIn: action.loggedIn}

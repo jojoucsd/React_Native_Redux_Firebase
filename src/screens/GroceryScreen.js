@@ -39,7 +39,7 @@ class GroceryScreen extends Component {
             this.props.listenItems(this.props.uid)
 
         } catch (error) {
-            console.log(error)
+            console.log("do we have error", error)
         }
     }
 

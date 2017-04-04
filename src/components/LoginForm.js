@@ -5,7 +5,7 @@ import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
-import { getAccessToken, checkAuthencity } from '../action/facebookAuth'
+import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
 const { AccessToken, LoginButton, GraphRequest, GraphRequestManager } = FBSDK
 const infoRequest = new GraphRequest(
@@ -17,45 +17,19 @@ const infoRequest = new GraphRequest(
 
 class LoginForm extends Component {
 
-  componentWillMount() {
+  // componentWillMount() {
+  //   this.props.checkAuthencity()
+
+  // }
+  // componentDidMount() {
+  //   this.props.getAccessToken()
+  // }
+
+  successfulFbLogin = () => {
     this.props.checkAuthencity()
-  }
-  componentDidMount() {
-
-    this.getAccessToken()
+    // this.props.getAccessToken()
   }
 
-  // successfulFbLogin = () => {
-  //   // this.checkAuthencity()
-  //   this.getAccessToken();
-  // }
-
-  // checkAuthencity() {
-  //   AccessToken.getCurrentAccessToken()
-  //     .then((data) => {
-  //       this.props.checkAuthencity()
-  //     })
-  //     .catch((err) => {
-  //       console.log('Err', err)
-  //     })
-  // }
-
-  getAccessToken() {
-    console.log('log in get access')
-    // const infoRequest = new GraphRequest(
-    //   'me?fields=name,picture,email',
-    //   null,
-    //   this._responseInfoCallback,
-    // );
-    // AccessToken.getCurrentAccessToken().then(
-    //   (data) => {
-    //     if (data) {
-    //       console.log('we are in data')
-    //       new GraphRequestManager().addRequest(infoRequest).start()
-    //     }
-    //   }
-    // )
-  }
   _responseInfoCallback = (error, result) => {
     if (error) {
       alert('Error fetching data' + JSON.stringify(error));
@@ -72,8 +46,7 @@ class LoginForm extends Component {
         console.log('Login Cancelled');
       } else {
         console.log('Login Success:' + result.grantedPermissions);
-        console.log('this', this)
-        this.props.checkAuthencity()
+        this.successfulFbLogin()
         //push here
       }
     }, function (error) {
@@ -146,35 +119,28 @@ class LoginForm extends Component {
           {this.renderButton()}
         </CardSection>
 
-        <CardSection>
+        {/*<CardSection>
           <Button onPress={this._fbAuth}>
             Facebook Login
           </Button>
+        </CardSection>*/}
+        <CardSection>
           <LoginButton
             publishPermissions={["publish_actions"]}
             onLoginFinished={
               (error, result) => {
                 if (error) {
-                  alert("Login failed with error: " + result.error);
+                  console.log("Login failed with error: " ,result.error);
                 } else if (result.isCancelled) {
-                  alert("Login was cancelled");
+                  console.log("Login was cancelled");
                 } else {
-                  alert("Login was successful with permissions: " + result.grantedPermissions)
-                  console.log(result)
-                  AccessToken.getCurrentAccessToken(result)
-                    .then((data) => {
-                      this.userGraph()
-                      console.log('user token', data)
-                    })
-                    .catch((err) => {
-                      console.log('Error', err);
-                    })
+                  console.log("Login was successful with permissions: " + result.grantedPermissions)
+                  this.successfulFbLogin()
                 }
               }
             }
             onLogoutFinished={() => alert("User logged out")} />
         </CardSection>
-
       </Card>
     )
   }

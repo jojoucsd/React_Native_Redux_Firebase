@@ -3,32 +3,37 @@ import firebase from 'firebase'
 
 const { AccessToken, GraphRequest, GraphRequestManager } = FBSDK
 import {
-    FB_LOG_OUT,
-    GET_FB_TOKEN,
-    CHECK_FB_AUTH
+    USER_NO_CHANGED,
+    USER_CHANGED,
+    LOG_IN_ERROR
 } from './types'
 
 export const checkAuthencity = () => dispatch => {
-    
+
     AccessToken.getCurrentAccessToken()
         .then((data) => {
-            if (data) {
-                console.log('Data', data.accessToken)
-                const cred = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
-                console.log('Cred', cred)
-                firebase.auth().signInWithCredential(cred).catch(function(error){
-                    console.log('error',error.message)
+            console.log('data', data)
+            const cred = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
+            firebase.auth().signInWithCredential(cred)
+                .then(user => {
+                    console.log('user', user)
+                    dispatch({
+                        type: USER_CHANGED,
+                        loggedIn: true,
+                        uid: user.uid
+                    })
                 })
-                dispatch({
-                    type: CHECK_FB_AUTH,
-                    fbloggedIn: true
+                .catch(function (error) {
+                    console.log('error', error.message)
                 })
-            } else {
-                dispatch({
-                    type: CHECK_FB_AUTH,
-                    fbloggedIn: false
-                })
-            }
-        }
-        )
+        })
+        .catch(error => {
+            dispatch({
+                type: LOG_IN_ERROR,
+                payload: error,
+                isLoading: false
+            })
+            console.log('FB Auth Failed')
+        })
 }
+
