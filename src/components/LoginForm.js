@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
 import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
-import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import FBSDK from 'react-native-fbsdk'
+
 const { AccessToken, LoginButton, GraphRequest, GraphRequestManager } = FBSDK
 const infoRequest = new GraphRequest(
   'me?fields=name,picture,email',
@@ -14,20 +15,10 @@ const infoRequest = new GraphRequest(
   this._responseInfoCallback,
 );
 
-
 class LoginForm extends Component {
-
-  // componentWillMount() {
-  //   this.props.checkAuthencity()
-
-  // }
-  // componentDidMount() {
-  //   this.props.getAccessToken()
-  // }
 
   successfulFbLogin = () => {
     this.props.checkAuthencity()
-    // this.props.getAccessToken()
   }
 
   _responseInfoCallback = (error, result) => {
@@ -39,25 +30,8 @@ class LoginForm extends Component {
     }
   }
 
-  _fbAuth = () => {
-    LoginManager.logInWithReadPermissions(["public_profile"]).then(function (result) {
-      if (result.isCancelled) {
-        alert("Login Cancelled")
-        console.log('Login Cancelled');
-      } else {
-        console.log('Login Success:' + result.grantedPermissions);
-        this.successfulFbLogin()
-        //push here
-      }
-    }, function (error) {
-      alert('Login Error', error)
-      console.log('Login Error:' + error)
-    })
-  }
-
   authError(loginError) {
     //Auth Error Message when log in fail
-
     if (loginError) {
       return (
         <Text style={styles.errorTextStyle}>
@@ -69,14 +43,12 @@ class LoginForm extends Component {
 
   handleLogin = () => {
     // Action to Reducer to login and create user
-
     const { email, password } = this.props
     this.props.loginUser({ email, password })
   }
 
   renderButton() {
     // Log in Button render and Spinner 
-
     if (this.props.isLoading) {
       return <Spinner size="large" />
     }
@@ -119,11 +91,6 @@ class LoginForm extends Component {
           {this.renderButton()}
         </CardSection>
 
-        {/*<CardSection>
-          <Button onPress={this._fbAuth}>
-            Facebook Login
-          </Button>
-        </CardSection>*/}
         <CardSection>
           <LoginButton
             publishPermissions={["publish_actions"]}
@@ -148,9 +115,7 @@ class LoginForm extends Component {
 
 function mapStateToProps(state) {
   const { email, password, loginError, uid, isLoading } = state.auth;
-
   //maping the state in reducer to the props and grant access to this.props
-
   return {
     email,
     password,

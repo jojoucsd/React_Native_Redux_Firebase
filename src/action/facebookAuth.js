@@ -5,14 +5,19 @@ const { AccessToken, GraphRequest, GraphRequestManager } = FBSDK
 import {
     USER_NO_CHANGED,
     USER_CHANGED,
-    LOG_IN_ERROR
+    LOG_IN_ERROR,
+    IS_LOG_IN_LOADING
 } from './types'
 
 export const checkAuthencity = () => dispatch => {
 
     AccessToken.getCurrentAccessToken()
         .then((data) => {
-            console.log('data', data)
+            dispatch({
+                type: IS_LOG_IN_LOADING,
+                isLoading: true
+            })
+
             const cred = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
             firebase.auth().signInWithCredential(cred)
                 .then(user => {
