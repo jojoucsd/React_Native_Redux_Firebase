@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import {  Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
 import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
 import FBSDK from 'react-native-fbsdk'
+import Button from 'react-native-button';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const { AccessToken, LoginButton, GraphRequest, GraphRequestManager, LoginManager } = FBSDK
 const infoRequest = new GraphRequest(
@@ -19,11 +21,6 @@ class LoginForm extends Component {
 
   successfulFbLogin = () => {
     this.props.checkAuthencity()
-  }
-
-  componentWillMount() {
-    console.log('how mand times gets call')
-    // this.successfulFbLogin()
   }
 
   _responseInfoCallback = (error, result) => {
@@ -51,7 +48,7 @@ class LoginForm extends Component {
     const { email, password } = this.props
     this.props.loginUser({ email, password })
   }
-
+/*
   renderButton() {
     // Log in Button render and Spinner 
     if (this.props.isLoading) {
@@ -65,19 +62,20 @@ class LoginForm extends Component {
       </Button>
       </CardSection>
     )
-  }
-  renderFBlogin() {
+  }*/
+  /*renderFBlogin() {
     if (this.props.isLoading) {
       return <Spinner size="large" />
     }
     return (
       <CardSection>
-        <Button onPress={this.fbLoginButton.bind(this)}>
+        <Button onPress={this.fbLoginButton.bind(this)}
+          style={styles.fbButton}>
           Facebook Login
         </Button>
       </CardSection>
     )
-  }
+  }*/
 
   render() {
     const {
@@ -105,10 +103,13 @@ class LoginForm extends Component {
         </CardSection>
 
         {this.authError(loginError)}
-
-
-        {this.renderButton()}
-        {this.renderFBlogin()}
+        <CardSection>
+        <Icon.Button style={styles.loginButton} name="facebook" backgroundColor="#3b5998">
+          <Text style={{fontFamily: 'Arial', fontSize: 15, alignSelf:'stretch', color:'white'}}>Login with Facebook</Text>
+        </Icon.Button >
+        </CardSection>
+        {/*{this.renderButton()}
+        {this.renderFBlogin()}*/}
 
       </Card>
     )
@@ -152,6 +153,16 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'
+  },
+  fbButton: {
+    flex: 1,
+    alignSelf: 'stretch',
+    backgroundColor: '#8b9dc3',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#007aff',
+    marginLeft: 5,
+    marginRight: 5
   }
 };
 
