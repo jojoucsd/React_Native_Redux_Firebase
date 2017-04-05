@@ -8,7 +8,7 @@ import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAut
 import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
 import FBSDK from 'react-native-fbsdk'
 
-const { AccessToken, LoginButton, GraphRequest, GraphRequestManager } = FBSDK
+const { AccessToken, LoginButton, GraphRequest, GraphRequestManager, LoginManager } = FBSDK
 const infoRequest = new GraphRequest(
   'me?fields=name,picture,email',
   null,
@@ -19,6 +19,11 @@ class LoginForm extends Component {
 
   successfulFbLogin = () => {
     this.props.checkAuthencity()
+  }
+
+  componentWillMount() {
+    console.log('how mand times gets call')
+    // this.successfulFbLogin()
   }
 
   _responseInfoCallback = (error, result) => {
@@ -66,21 +71,11 @@ class LoginForm extends Component {
       return <Spinner size="large" />
     }
     return (
-      <LoginButton
-        publishPermissions={["publish_actions"]}
-        onLoginFinished={
-          (error, result) => {
-            if (error) {
-              console.log("Login failed with error: ", result.error);
-            } else if (result.isCancelled) {
-              console.log("Login was cancelled");
-            } else {
-              console.log("Login was successful with permissions: " + result.grantedPermissions)
-              this.successfulFbLogin()
-            }
-          }
-        }
-        onLogoutFinished={() => alert("User logged out")} />
+      <CardSection>
+        <Button onPress={this.fbLoginButton.bind(this)}>
+          Facebook Login
+        </Button>
+      </CardSection>
     )
   }
 
@@ -117,6 +112,26 @@ class LoginForm extends Component {
 
       </Card>
     )
+  }
+  fbLoginButton = () => {
+    console.log('we are here', this)
+    const that = this;
+    LoginManager.logInWithReadPermissions(['public_profile']).then(function (result) {
+      if (result.isCancelled) {
+        console.log('Login was cancelled');
+      } else {
+        // console.log("that", that)
+        that.props.checkAuthencity()
+        console.log('Login was successful with permissions:', result.grantedPermissions.toString());
+      }
+    },
+      function (error) {
+        console.log('Login failed with error', error)
+      }
+    )
+      .catch(function (error) {
+        console.log('houston we have a problem', error)
+      })
   }
 }
 

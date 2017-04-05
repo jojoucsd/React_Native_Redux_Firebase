@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, TouchableHighlight, AlertIOS, Navigator, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
-import { Button, Header,Spinner, CardSection } from '../components/common';
+import { Button, Header, Spinner, CardSection } from '../components/common';
 import LoginForm from '../components/LoginForm';
 import GroceryScreen from '../screens/GroceryScreen'
 import { connect } from 'react-redux';
@@ -12,8 +12,6 @@ import { logoutUser, userStatus } from '../action/firebaseAuth'
 class LoginScreen extends Component {
 
   renderContent() {
-    console.log('loggedIn', this.props.loggedIn)
-    console.log('fbloggedIn', this.props.fbloggedIn)
 
     switch (this.props.loggedIn) {
       case true:
@@ -22,7 +20,7 @@ class LoginScreen extends Component {
           <View>
             <GroceryScreen {...this.props} />
             <CardSection>
-              <Button onPress = {this.props.logoutUser}>
+              <Button onPress={this.props.logoutUser}>
                 Log Out
               </Button>
             </CardSection>
@@ -50,7 +48,7 @@ class LoginScreen extends Component {
 function mapStateToProps(state) {
   const { loggedIn, uid } = state.auth
 
-  return { loggedIn, uid}
+  return { loggedIn, uid }
 }
 
 const styles = StyleSheet.create({
@@ -59,4 +57,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, { logoutUser, userStatus})(LoginScreen)
+export default connect(mapStateToProps, { logoutUser, userStatus })(LoginScreen)
