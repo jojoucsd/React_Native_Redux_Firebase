@@ -94,7 +94,7 @@ class GroceryScreen extends Component {
                             >
                                 <View style={style.rowBack}>
                                     <TouchableOpacity onPress={_ => this.props.searchMobile("4158126840")} >
-                                    <Text style={style.backgroundColor}>Search</Text>
+                                    <Text style={style.backgroundColor}>Task</Text>
                                     </TouchableOpacity>
                                     <View style={[style.backRightBtn, style.backRightBtnLeft]}>
                                         <Text style={style.backTextWhite}>Update</Text>

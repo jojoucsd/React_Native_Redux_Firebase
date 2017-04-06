@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
-import {  Card, CardSection, Input, Spinner } from './common';
+import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
 import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
 import FBSDK from 'react-native-fbsdk'
-import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const { AccessToken, LoginButton, GraphRequest, GraphRequestManager, LoginManager } = FBSDK
@@ -48,7 +47,7 @@ class LoginForm extends Component {
     const { email, password } = this.props
     this.props.loginUser({ email, password })
   }
-/*
+
   renderButton() {
     // Log in Button render and Spinner 
     if (this.props.isLoading) {
@@ -62,20 +61,19 @@ class LoginForm extends Component {
       </Button>
       </CardSection>
     )
-  }*/
-  /*renderFBlogin() {
+  }
+  renderFBlogin() {
     if (this.props.isLoading) {
       return <Spinner size="large" />
     }
     return (
       <CardSection>
-        <Button onPress={this.fbLoginButton.bind(this)}
-          style={styles.fbButton}>
-          Facebook Login
-        </Button>
+        <Icon.Button style={styles.loginButton} name="facebook" backgroundColor="#3b5998" onPress={this.fbLoginButton.bind(this)}>
+          <Text style={{ fontFamily: 'Arial', fontSize: 15, alignSelf: 'stretch', color: 'white' }}>Login with Facebook</Text>
+        </Icon.Button >
       </CardSection>
     )
-  }*/
+  }
 
   render() {
     const {
@@ -103,13 +101,8 @@ class LoginForm extends Component {
         </CardSection>
 
         {this.authError(loginError)}
-        <CardSection>
-        <Icon.Button style={styles.loginButton} name="facebook" backgroundColor="#3b5998">
-          <Text style={{fontFamily: 'Arial', fontSize: 15, alignSelf:'stretch', color:'white'}}>Login with Facebook</Text>
-        </Icon.Button >
-        </CardSection>
-        {/*{this.renderButton()}
-        {this.renderFBlogin()}*/}
+        {this.renderButton()}
+        {this.renderFBlogin()}
 
       </Card>
     )
