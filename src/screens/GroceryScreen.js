@@ -72,7 +72,7 @@ class GroceryScreen extends Component {
         console.log('Props in Grocery', this.props.items)
         return (
             <View>
-                <StatusBar title={this.props.email} />
+                <StatusBar title={this.props.email} style={{backgroundColor: 'pink'}} />
                 <Text style={styles.heading}> UserID: {this.props.uid}</Text>
                 <Text style={styles.heading}> Mobile Number(From DB): {this.props.mobile}</Text>
 
@@ -89,16 +89,19 @@ class GroceryScreen extends Component {
                         return (
                             <SwipeRow
                                 disableLeftSwipe={false}
-                                leftOpenValue={20 + Math.random() * 150}
+                                leftOpenValue={ 150}
                                 rightOpenValue={-150}
                             >
                                 <View style={style.rowBack}>
-                                    <TouchableOpacity onPress={_ => this.props.searchMobile("4158126840")} >
-                                    <Text style={style.backgroundColor}>Task</Text>
+                                    <TouchableOpacity style={[style.backLeftBtn, style.backLeftBtnLeft]}>
+                                        <Text style={style.backTextWhite}>Claim</Text>
                                     </TouchableOpacity>
-                                    <View style={[style.backRightBtn, style.backRightBtnLeft]}>
+                                    <TouchableOpacity style={[style.backLeftBtn, style.backLeftBtnRight]}>
+                                        <Text style={style.backTextWhite}>Total</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[style.backRightBtn, style.backRightBtnLeft]}>
                                         <Text style={style.backTextWhite}>Update</Text>
-                                    </View>
+                                    </TouchableOpacity>
                                     <TouchableOpacity style={[style.backRightBtn, style.backRightBtnRight]} onPress={_ => this.props.removeItem(this.props.uid, data._key)}>
                                         <Text style={style.backTextWhite}>Complete</Text>
                                     </TouchableOpacity>
@@ -208,11 +211,27 @@ const style = StyleSheet.create({
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: 'yellow',
+        backgroundColor: 'transparent',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingLeft: 15,
+    },
+    backLeftBtn:{
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75
+    },
+    backLeftBtnLeft:{
+        backgroundColor: 'pink',
+        left: 75
+    },
+    backLeftBtnRight:{
+        backgroundColor: 'green',
+        left: 0
     },
     backRightBtn: {
         alignItems: 'center',

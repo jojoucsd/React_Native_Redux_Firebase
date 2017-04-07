@@ -71,7 +71,10 @@ class LoginForm extends Component {
         <Icon.Button style={styles.loginButton} name="facebook" backgroundColor="#3b5998" onPress={this.fbLoginButton.bind(this)}>
           <Text style={{ fontFamily: 'Arial', fontSize: 15, alignSelf: 'stretch', color: 'white' }}>Login with Facebook</Text>
         </Icon.Button >
-      </CardSection>
+        <Icon.Button style={styles.loginButton} name="google" backgroundColor='#F44336'>
+          Login with Google
+        </Icon.Button>
+      </CardSection >
     )
   }
 
