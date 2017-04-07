@@ -12,59 +12,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { userStatus } from '../action/firebaseAuth'
 
-
-class NavButton extends Component {
-
-    render() {
-        return (
-            <TouchableHighlight
-                style={styles.button}
-                underlayColor="#B5B5B5"
-                onPress={this.props.onPress}>
-                <Text style={styles.buttonText}>{this.props.text}</Text>
-            </TouchableHighlight>
-        )
-    }
-}
-
-//creating Navbar
-var NavigationBarRouteMapper = {
-
-    LeftButton: function (route, navigator, index, navState) {
-        if (index === 0) {
-            return null;
-        }
-
-        return (
-            <TouchableOpacity
-                style={styles.navBarLeftButton} onPress={() => navigator.pop()}>
-                <Text>Back</Text>
-            </TouchableOpacity>
-        )
-    },
-
-    RightButton: function (route, navigator, index, navState) {
-        if (index === 0) {
-            return null;
-        }
-        return (
-            <TouchableOpacity
-                style={styles.navBarRightButton} onPress={() => firebase.auth().signOut()}>
-                <Text>LogOut</Text>
-            </TouchableOpacity>
-        );
-    },
-
-    Title: function (route, navigator, index, navState) {
-        if (index === 0) {
-            return null;
-        }
-        return (
-            <Text>Title</Text>
-        );
-    },
-};
-
 class AppNavi extends Component {
 
     componentWillMount() {
