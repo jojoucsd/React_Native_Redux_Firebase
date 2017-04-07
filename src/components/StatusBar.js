@@ -9,7 +9,7 @@ class StatusBar extends Component {
     return (
       <View>
         <View style={[styles.statusbar , this.props.style || {}]}/>
-        <View style={styles.navbar}>
+        <View style={[styles.navbar , this.props.style || {}]}>
           <Text style={styles.navbarTitle}>{this.props.title}</Text>
         </View>
       </View>

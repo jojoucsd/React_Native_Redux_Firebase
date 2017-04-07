@@ -45,7 +45,6 @@ var styles = StyleSheet.create({
   },
   statusbar: {
     backgroundColor: '#fff',
-    height: 22,
   },
   center: {
     textAlign: 'center',
