@@ -5,7 +5,8 @@ import { Button, Card, CardSection, Input, Spinner } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { emailChanged, passwordChanged, loginUser, } from '../action/firebaseAuth'
-import { checkAuthencity, getAccessToken } from '../action/facebookAuth'
+import { checkAuthencity } from '../action/facebookAuth'
+import { googleAuthencity } from '../action/googleAuth'
 import FBSDK from 'react-native-fbsdk'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -22,6 +23,9 @@ class LoginForm extends Component {
     this.props.checkAuthencity()
   }
 
+  successfulGoogleLogin = () =>{
+    this.props.googleAuthencity()
+  }
   _responseInfoCallback = (error, result) => {
     if (error) {
       alert('Error fetching data' + JSON.stringify(error));
@@ -71,7 +75,8 @@ class LoginForm extends Component {
         <Icon.Button style={styles.loginButton} name="facebook" backgroundColor="#3b5998" onPress={this.fbLoginButton.bind(this)}>
           <Text style={{ fontFamily: 'Arial', fontSize: 15, alignSelf: 'stretch', color: 'white' }}>Login with Facebook</Text>
         </Icon.Button >
-        <Icon.Button style={styles.loginButton} name="google" backgroundColor='#F44336'>
+        <Text>    </Text>
+        <Icon.Button style={styles.loginButton} name="google" backgroundColor='#F44336' onPress={this.successfulGoogleLogin.bind(this)}>
           Login with Google
         </Icon.Button>
       </CardSection >
@@ -162,4 +167,4 @@ const styles = {
   }
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, checkAuthencity, getAccessToken })(LoginForm)
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, checkAuthencity, googleAuthencity })(LoginForm)

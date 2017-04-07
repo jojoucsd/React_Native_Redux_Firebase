@@ -68,13 +68,7 @@ class AppNavi extends Component {
                 initialRoute={{ ident: "LoginScreen" }}
                 ref="appNavigator"
                 style={styles.naviagorStyles}
-                renderScene={this._renderScene}
-                navigationBar={
-                    <Navigator.NavigationBar
-                        routeMapper={NavigationBarRouteMapper}
-                        style={styles.navBar}
-                    />
-                }>
+                renderScene={this._renderScene}>
             </Navigator>
         )
     }
