@@ -69,6 +69,13 @@ var styles = StyleSheet.create({
     marginRight: 5,
     alignSelf: 'stretch'
   },
+  heading: {
+    alignSelf: 'center',
+    color: '#444',
+    fontSize: 14,
+    fontWeight: '400',
+    backgroundColor: 'transparent',
+  }
 })
 
 module.exports = styles
