@@ -7,12 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "apsl-react-native-button": "^3.0.2",
     "firebase": "^3.4.1",
     "lodash": "^4.17.4",
     "react": "15.4.2",
     "react-native": "0.42.3",
-    
     "react-native-fbsdk": "^0.5.0",
     "react-native-swipe-list-view": "^0.4.1",
     "react-native-textinput-effects": "^0.3.0",

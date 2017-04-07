@@ -72,7 +72,8 @@ class GroceryScreen extends Component {
         console.log('Props in Grocery', this.props.items)
         return (
             <View>
-                <StatusBar title={this.props.email} style={{backgroundColor: 'pink'}} />
+                <StatusBar title={this.props.email} style={{backgroundColor: 'yellow'}} > 
+                </StatusBar>
                 <Text style={styles.heading}> UserID: {this.props.uid}</Text>
                 <Text style={styles.heading}> Mobile Number(From DB): {this.props.mobile}</Text>
 
